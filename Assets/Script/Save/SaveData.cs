@@ -18,6 +18,9 @@ public class SaveData
     public int totalSales;
     public int dailySales;
 
+    public int purchaseCost;
+    public int maintenanceCost;
+
     public string saveAt;
 
     public List<StockItemSaveData> stockItems = new List<StockItemSaveData>();

@@ -963,13 +963,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeMessage: {fileID: 870122575}
   money: 10000
-  currentState: 0
-  prepareTime: 30
-  openTime: 60
   day: 1
+  startMoney: 10000
+  startDay: 1
+  prepareTime: 10
+  openTime: 30
   dailySales: 0
   purchaseCost: 0
   maintenanceCost: 0
+  totalSales: 0
+  currentState: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
