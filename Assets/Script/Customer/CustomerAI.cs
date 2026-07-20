@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.XR.OpenVR;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// 손님의 전체적인 행동 흐름을 관리
+/// </summary>
 public class CustomerAI : MonoBehaviour
 {
     NavMeshAgent agent;
@@ -35,7 +36,7 @@ public class CustomerAI : MonoBehaviour
 
     float pickTimer = 0f;
 
-    // ⭐ 기다림 관련
+    // 기다림 관련
     float waitTimer;
     public float maxWaitTime = 5f;
 
@@ -82,6 +83,10 @@ public class CustomerAI : MonoBehaviour
             ChangeState(CustomerState.WaitForRestock);
     }
 
+    /// <summary>
+    /// 애니메이션을 갱신하고 현재 상태에 해당하는 행동을 매 프레임 실행
+    /// 손님 오브젝트가 활성화된 동안 매 프레임 호출
+    /// </summary>
     void Update()
     {
         UpdateAnimation();
@@ -112,6 +117,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 손님의 현재 상태를 변경하고 해당 상태를 시작하는 데 필요한 이동 및 타이머를 설정
+    /// 각 행동 단계가 전환될 때 호출
+    /// </summary>
     void ChangeState(CustomerState newState)
     {
         currentState = newState;
@@ -121,6 +130,7 @@ public class CustomerAI : MonoBehaviour
             case CustomerState.MoveToShelf:
                 if (targetShelf == null)
                 {
+                    //이동할 진열대가 사라진 경우 재입고 상태로 전환
                     ChangeState(CustomerState.WaitForRestock);
                     return;
                 }
@@ -157,6 +167,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 현재 재고가 남아 있는 진열대 중 하나를 무작위로 선택
+    /// 첫 방문 진열대를 정하거나 품절 후 다른 진열대를 찾을 때 호출
+    /// </summary>
     bool PickRandomShelf()
     {
         List<Shelf> available = new List<Shelf>();
@@ -176,13 +190,16 @@ public class CustomerAI : MonoBehaviour
         return true;
     }
 
-
+    /// <summary>
+    /// 선택한 진열대의 재고와 도착 여부를 확인하여 다음 행동을 결정
+    /// </summary>
     void UpdateMoveToShelf()
     {
         if (!shelf.HasStock())
         {
             retryCount++;
 
+            //다른 진열대를 무한하게 탐색하는 것을 방지하기 위해 최대 재시도 횟수 이후에는 재입고를 기다림
             if (retryCount >= maxRetry)
             {
                 ChangeState(CustomerState.WaitForRestock);
@@ -207,6 +224,9 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 상품을 고르는 시간을 처리, 선택 완료 후 계산대 진입 또는 이탈 대기를 결정
+    /// </summary>
     void UpdatePicking()
     {
         pickTimer -= Time.deltaTime;
@@ -253,6 +273,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 계산대가 배정한 대기 위치를 목적지로 설정하고 해당 위치로 이동
+    /// 계산대의 대기열 순서가 추가 또는 갱신될 때 CheckoutCounter에서 호출
+    /// </summary>
     public void SetQueuePosition(Transform pos)
     {
         queueTarget = pos;
@@ -264,6 +288,9 @@ public class CustomerAI : MonoBehaviour
         ChangeState(CustomerState.MoveToQueue);
     }
 
+    /// <summary>
+    /// 배정된 대기 위치에 도착했는지 확인 후 계산 대기 상태로 전환
+    /// </summary>
     void UpdateMoveToQueue()
     {
         if (!agent.pathPending && agent.remainingDistance < 0.3f)
@@ -273,9 +300,12 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대기열에서 대기 시간을 기다리다 최대 시간에 도달하면 구매를 포기하고 매장에서 퇴장
+    /// </summary>
     void UpdateWaitInQueue()
     {
-        // ⭐ 첫 번째 손님은 안 떠남
+        //첫 번째 손님은 안 떠남
         if (checkOutCounter.IsFirst(this))
             return;
 
@@ -287,6 +317,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 물건을 고른 손님은 대기열이 가득 차있다면 빈자리를 기다림
+    /// 대기 시간이 오래되도록 빈자리가 나오지 않는다면 구매를 포기하고 매장에서 퇴장
+    /// </summary>
     void UpdateWaitBeforeLeave()
     {
         if (checkOutCounter.CanEnterQueue())
@@ -325,7 +359,7 @@ public class CustomerAI : MonoBehaviour
             }
             else
             {
-                // ⭐ 진열대 근처에서 서성거리기
+                //진열대 근처에서 서성거리기
                 Vector3 randomPos = transform.position + Random.insideUnitSphere * disRanMove;
                 randomPos.y = transform.position.y;
 
@@ -341,6 +375,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 물건을 고르지 못한 손님은 재입고가 되기를 기다리면서 매장을 돌아다님
+    /// 대기 시간이 끝나면 구매를 포기하고 매장에서 퇴장
+    /// </summary>
     void UpdateWaitForRestock()
     {
         if (PickRandomShelf())
@@ -366,7 +404,7 @@ public class CustomerAI : MonoBehaviour
             }
             else
             {
-                // ⭐ 진열대 근처에서 서성거리기
+                //진열대 근처에서 서성거리기
                 Vector3 randomPos = transform.position + Random.insideUnitSphere * disRanMove;
                 randomPos.y = transform.position.y;
 
@@ -382,6 +420,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 대기열에서 오래 기다린 손님은 상품을 반납하고 대기열에서 제거한 후 퇴장
+    /// WaitInQueue 상태의 대기 시간이 만료되면 호출
+    /// </summary>
     void LeaveAngry()
     {
         if (!hasPaid)
@@ -394,12 +436,20 @@ public class CustomerAI : MonoBehaviour
         ChangeState(CustomerState.Leaving);
     }
 
+    /// <summary>
+    /// 계산대 대기열에 들어가지 못한 손님의 상품을 반납하고 퇴장
+    /// aitBeforeLeave 상태의 제한 시간이 만료되었을 때 호출
+    /// </summary>
     void LeaveWithoutBuying()
     {
         ReturnItems();
         ChangeState(CustomerState.Leaving);
     }
 
+    /// <summary>
+    /// 결제하지 않은 카트의 상품을 반품 구역으로 전달하고 퇴장
+    /// 손님이 구매하지 않고 퇴장시에 퇴장 직전에 호출
+    /// </summary>
     void ReturnItems()
     {
         if (cart.Count > 0)
@@ -409,12 +459,19 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 결재 완료 상태를 기록하고 손님을 출구로 이동시킴
+    /// CheckoutCounter가 해당 손님의 결제 금액을 정산한 직후 호출
+    /// </summary>
     public void FinishCheckout()
     {
         hasPaid = true;
         ChangeState(CustomerState.Leaving);
     }
 
+    /// <summary>
+    /// 손님이 출구에 도착했는지 확인하고 오브젝트를 제거
+    /// </summary>
     void UpdateLeaving()
     {
         if (!agent.pathPending && agent.remainingDistance < 0.3f)
@@ -423,6 +480,10 @@ public class CustomerAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 영업 종료 등 모든 손님을 강제로 내보내야 할 때 호출
+    /// 상품을 반납하고 대기열에서 제거한 뒤 즉시 퇴장 상태로 전환
+    /// </summary>
     public void ForceLeave()
     {
         if (cart.Count > 0)
