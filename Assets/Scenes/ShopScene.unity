@@ -1217,6 +1217,53 @@ MonoBehaviour:
   maintenanceText: {fileID: 1366246875}
   profitText: {fileID: 1657805795}
   closeInfoText: {fileID: 185833357}
+--- !u!1 &608996734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 608996736}
+  - component: {fileID: 608996735}
+  m_Layer: 0
+  m_Name: ItemDatabase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &608996735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608996734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77caf28030b70a24f8ac0a2dab16ee2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
+  allItems:
+  - {fileID: 11400000, guid: beebacdda6db96c41a7f0f9cd9a66f22, type: 2}
+  - {fileID: 11400000, guid: 878e86ed67de0f34dac4dc2b36344dc5, type: 2}
+--- !u!4 &608996736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608996734}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 536.46515, y: 633.8044, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &629251807
 GameObject:
   m_ObjectHideFlags: 0
@@ -8825,4 +8872,5 @@ SceneRoots:
   - {fileID: 1394016031}
   - {fileID: 1328498348}
   - {fileID: 44754999}
+  - {fileID: 608996736}
   - {fileID: 870122576}

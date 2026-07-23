@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c04fd7bd143c574180d0400ca019ef1, type: 3}
   m_Name: DiamondRing
   m_EditorClassIdentifier: 
+  itemID: 0002
   itemName: DiamondRing
   buyPrice: 1750
   sellPrice: 2500
