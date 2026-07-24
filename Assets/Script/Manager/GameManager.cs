@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -142,9 +144,22 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateMoneyUI(money);
         UIManager.Instance.UpdateTimeUI(timer, currentState, day);
 
-        Debug.Log($"[GameManager] 저장 데이터 적용 완료 / Day: {day}, Money: {money}");
+        ApplyLoadedShelves(savedata.shelfSlots);
 
-        //TODO:아래 재고와 진열대 복원 추가
+        Debug.Log($"[GameManager] 저장 데이터 적용 완료 / Day: {day}, Money: {money}"); 
+    }
+
+    /// <summary>
+    /// 저장 데이터에 포함된 진열대 슬롯 상태를 현재 씬의 Shelf 오브젝트들에 적용
+    /// </summary>
+    private void ApplyLoadedShelves(List<ShelfSlotSaveData> shelfSlotSaveDataList)
+    {
+        Shelf[] shelves = FindObjectsByType<Shelf>(FindObjectsSortMode.None);
+
+        foreach (Shelf shelf in shelves)
+        {
+            shelf.ApplyLoadedShelfData(shelfSlotSaveDataList);
+        }
     }
 
     /// <summary>
@@ -178,7 +193,12 @@ public class GameManager : MonoBehaviour
         saveData.maintenanceCost = maintenanceCost;
         saveData.totalSales = totalSales;
 
-        //TODO: 재고와 진열대 데이터 추가
+        Shelf[] shelves = FindObjectsByType<Shelf>(FindObjectsSortMode.None);
+
+        foreach (Shelf shelf in shelves)
+        {
+            saveData.shelfSlots.AddRange(shelf.CreateShelfSlotSaveData());
+        }
 
         return saveData;
     }

@@ -966,8 +966,8 @@ MonoBehaviour:
   day: 1
   startMoney: 10000
   startDay: 1
-  prepareTime: 10
-  openTime: 30
+  prepareTime: 20
+  openTime: 10
   dailySales: 0
   purchaseCost: 0
   maintenanceCost: 0
@@ -3353,6 +3353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1951c3f70b962004faa0d42888b12068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shelfID: Shelf_03
   slots:
   - {fileID: 2141256927}
   - {fileID: 915211378}
@@ -4077,6 +4078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1951c3f70b962004faa0d42888b12068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shelfID: Shelf_02
   slots:
   - {fileID: 1337678373}
   - {fileID: 63958334}
@@ -4811,6 +4813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1951c3f70b962004faa0d42888b12068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shelfID: Shelf_04
   slots:
   - {fileID: 1025286483}
   - {fileID: 862453305}
@@ -8810,6 +8813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1951c3f70b962004faa0d42888b12068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shelfID: Shelf_01
   slots:
   - {fileID: 893684011}
   - {fileID: 1425006335}
