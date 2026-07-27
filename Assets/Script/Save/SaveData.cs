@@ -1,6 +1,6 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// JSON 파일에 저장될 전체 게임 진행 데이터
@@ -35,12 +35,26 @@ public class SaveData
 public class StockItemSaveData
 {
     public string itemid;
-    public int amount;
+    public int amount = 1;
 
+    public Vector3 position;
+    public Vector3 eulerAngles;
+
+    public StockItemSaveData(string itemid, Vector3 position, Vector3 eulerAngles)
+    {
+        this.itemid = itemid;
+        this.position = position;
+        this.eulerAngles = eulerAngles;
+        amount = 1;
+    }
+
+    // 더미 데이터 테스트를 위한 함수
     public StockItemSaveData(string itemid, int amount)
     {
         this.itemid = itemid;
         this.amount = amount;
+        position = Vector3.zero;
+        eulerAngles = Vector3.zero;
     }
 }
 

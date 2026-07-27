@@ -145,8 +145,24 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateTimeUI(timer, currentState, day);
 
         ApplyLoadedShelves(savedata.shelfSlots);
+        ApplyLoadedStockItems(savedata.stockItems);
 
         Debug.Log($"[GameManager] 저장 데이터 적용 완료 / Day: {day}, Money: {money}"); 
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="stockItemSaveDataList"></param>
+    private void ApplyLoadedStockItems(List<StockItemSaveData> stockItemSaveDataList)
+    {
+        if (StockItemSaveController.Instance == null)
+        {
+            Debug.LogWarning("[GameManager] StockItemSaveController가 없어 바닥 재고를 복원하지 못했습니다.");
+            return;
+        }
+
+        StockItemSaveController.Instance.ApplyLoadedStockItems(stockItemSaveDataList);
     }
 
     /// <summary>
@@ -198,6 +214,15 @@ public class GameManager : MonoBehaviour
         foreach (Shelf shelf in shelves)
         {
             saveData.shelfSlots.AddRange(shelf.CreateShelfSlotSaveData());
+        }
+
+        if (StockItemSaveController.Instance != null)
+        {
+            saveData.stockItems.AddRange(StockItemSaveController.Instance.CreateStockItemSaveData());
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] StockItemSaveController가 없어 바닥 재고를 저장하지 못했습니다.");
         }
 
         return saveData;
