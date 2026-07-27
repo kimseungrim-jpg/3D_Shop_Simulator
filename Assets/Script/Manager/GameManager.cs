@@ -146,14 +146,14 @@ public class GameManager : MonoBehaviour
 
         ApplyLoadedShelves(savedata.shelfSlots);
         ApplyLoadedStockItems(savedata.stockItems);
+        ApplyLoadedHeldItem(savedata.helfItem);
 
         Debug.Log($"[GameManager] 저장 데이터 적용 완료 / Day: {day}, Money: {money}"); 
     }
 
     /// <summary>
-    /// 
+    /// 저장 데이터에 포함된 재고 아이템들을 현재 씬에 복원
     /// </summary>
-    /// <param name="stockItemSaveDataList"></param>
     private void ApplyLoadedStockItems(List<StockItemSaveData> stockItemSaveDataList)
     {
         if (StockItemSaveController.Instance == null)
@@ -176,6 +176,22 @@ public class GameManager : MonoBehaviour
         {
             shelf.ApplyLoadedShelfData(shelfSlotSaveDataList);
         }
+    }
+
+    /// <summary>
+    /// 저장 데이터에 포함된 플레이어 픽업 아이템을 현재 플레이어 인벤토리에 복원
+    /// </summary>
+    private void ApplyLoadedHeldItem(HeldItemSaveData heldItemSaveData)
+    {
+        PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
+
+        if (playerInventory == null)
+        {
+            Debug.LogWarning("[GameManager] PlayerInventory가 없어 픽업 아이템을 불러오지 못했습니다.");
+            return;
+        }
+
+        playerInventory.ApplyLoadedHeldItem(heldItemSaveData);
     }
 
     /// <summary>
@@ -223,6 +239,13 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("[GameManager] StockItemSaveController가 없어 바닥 재고를 저장하지 못했습니다.");
+        }
+
+        PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
+
+        if (playerInventory != null)
+        {
+            saveData.helfItem = playerInventory.CreateHeldItemSaveData();
         }
 
         return saveData;

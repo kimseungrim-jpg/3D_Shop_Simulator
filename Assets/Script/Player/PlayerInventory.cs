@@ -6,13 +6,14 @@ using UnityEngine;
 /// </summary>
 public class PlayerInventory : MonoBehaviour
 {
+    [Header("픽업 아이템 위치")]
     public Transform hand;
+    public Transform holdPoint;
 
+    [Header("픽업 아이템 아이템 상태")]
     public Item currentItem;
     public ItemData currentItemData;
     public GameObject holdItem;
-
-    public Transform holdPoint;
 
     public int currentItems = 0;
     public int maxItems = 10;
@@ -33,21 +34,60 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     public void SetItem(ItemData data)
     {      
-        if (holdItem != null)
+        if (data == null)
         {
-            Destroy(holdItem);
+            Debug.LogWarning("[PlayerInventory] 손에 들 ItemData가 없습니다.");
+            return;
         }
 
-        GameObject obj = Instantiate(data.prefabs, holdPoint);
+        if (data.prefabs == null)
+        {
+            Debug.LogWarning($"[PlayerInventory] {data.itemName}의 프리팹이 없습니다.");
+            return;
+        }
+
+        ClearItem();
+
+        Transform parent = GetHoldParent();
+
+        if (parent == null)
+        {
+            Debug.LogWarning("[PlayerInventory] 아이템을 픽업할 위치가 없습니다. hand 또는 handPoint를 연결바랍니다.");
+            return;
+        }
+
+        GameObject obj = Instantiate(data.prefabs, parent);
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
 
         Item item = obj.GetComponent<Item>();
 
+        if (item == null)
+        {
+            Debug.LogWarning($"[PlayerInventory] 생성된 프리팹에 Item 컴포넌트가 없습니다: {data.itemName}");
+            Destroy(obj);
+            return;
+        }
+
+        item.data = data;
+
         Rigidbody rb = item.GetComponent<Rigidbody>();
 
-        // 손에 든 아이템이 물리력에 의해 흔들리거나 떨어지지 않도록 고정
-        rb.isKinematic = true;
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+
+        Collider col = item.GetComponent<Collider>();
+
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
         currentItem = item;
         currentItemData = data;
+        holdItem = obj;
     }
 
     /// <summary>
@@ -56,13 +96,18 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     public void ClearItem()
     {
-        currentItemData = null;
-        currentItem = null;
-
-        if (holdItem != null)
+        if (currentItem != null)
+        {
+            Destroy(currentItem.gameObject);
+        }
+        else if (holdItem != null)
         {
             Destroy(holdItem);
         }
+
+        currentItemData = null;
+        currentItem = null;
+        holdItem = null;
     }
 
     /// <summary>
@@ -73,7 +118,9 @@ public class PlayerInventory : MonoBehaviour
     {
         // 보유량보다 많이 요청해도 수량이 음수가 되지 않도록 실제 제거량을 제한
         int remove = Mathf.Min(amount, currentItems);
+
         currentItems -= remove;
+
         return remove;
     }
 
@@ -83,14 +130,27 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     public void PickUpItem(Item item)
     {
-        // 한 번에 하나의 아이템만 들 수 있으므로 이미 들고 있다면 새로운 흭득을 취소
+        if (item == null)
+        {
+            return;
+        }
+
         if (currentItem != null)
         {
             return;
         }
 
+        Transform parent = GetHoldParent();
+
+        if (parent == null)
+        {
+            Debug.LogWarning("[PlayerInventory] 아이템을 픽업할 위치가 없습니다. hand또는 holdPoint를 설정해주세요");
+            return;
+        }
+
         currentItem = item;
-        currentItemData = item.data;   
+        currentItemData = item.data;
+        holdItem = item.gameObject;
 
         Rigidbody rb = item.GetComponent<Rigidbody>();
         Collider col = item.GetComponent<Collider>();
@@ -99,8 +159,6 @@ public class PlayerInventory : MonoBehaviour
         {
             // 손에 든 동안 월드 물리의 영향을 받지 않도록 Rigidbody를 고정
             rb.isKinematic = true;
-            //rb.linearVelocity = Vector3.zero;
-            //rb.angularVelocity = Vector3.zero;
         }
 
         if (col != null)
@@ -113,5 +171,64 @@ public class PlayerInventory : MonoBehaviour
         item.transform.SetParent(hand);
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
+    }
+
+    /// <summary>
+    /// 픽업 아이템을 저장 데이터로 반환
+    /// </summary>
+    public HeldItemSaveData CreateHeldItemSaveData()
+    {
+        if (currentItemData == null)
+        {
+            return new HeldItemSaveData();
+        }
+
+        if (string.IsNullOrWhiteSpace(currentItemData.itemID))
+        {
+            Debug.LogWarning($"[PlayerInventory] itemID가 없어 픽업 아이템을 저장할 수 없습니다: {currentItemData.itemName}");
+            return null;
+        }
+
+        return new HeldItemSaveData(true, currentItemData.itemID);
+    }
+
+    /// <summary>
+    /// 저장 데이터에 들어있던 손 아이템을 현재 플레이어 손에 복원
+    /// </summary>
+    public void ApplyLoadedHeldItem(HeldItemSaveData heldItemSaveData)
+    {
+        ClearItem();
+
+        if (heldItemSaveData == null || !heldItemSaveData.hasItem)
+        {
+            return;
+        }
+
+        if (ItemDatabase.Instance == null)
+        {
+            Debug.LogWarning("[PlayerInventory] ItemDatabase가 없어 손 아이템을 복원할 수 없습니다.");
+            return;
+        }
+
+        if (!ItemDatabase.Instance.TryGetItemData(heldItemSaveData.itemId, out ItemData itemData))
+        {
+            return;
+        }
+
+        SetItem(itemData);
+    }
+
+    /// <summary>
+    /// 픽업 아이템 위치를 반환
+    /// holdPoint가 연결되어 있으면 holfPoint를 우선 사용 없으면 기존 hand를 사용
+    /// </summary>
+    private Transform GetHoldParent()
+    {
+        if (holdItem != null)
+        {
+            return holdPoint;
+        }
+
+        return hand;
     }
 }

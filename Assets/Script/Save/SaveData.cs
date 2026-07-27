@@ -23,6 +23,8 @@ public class SaveData
 
     public string saveAt;
 
+    public HeldItemSaveData helfItem = new HeldItemSaveData();
+
     public List<StockItemSaveData> stockItems = new List<StockItemSaveData>();
     public List<ShelfSlotSaveData> shelfSlots = new List<ShelfSlotSaveData>();
 }
@@ -77,5 +79,29 @@ public class ShelfSlotSaveData
         this.slotIndex = slotIndex;
         this.itemId = itemId;
         this.amount = amount;
+    }
+}
+
+/// <summary>
+/// 플레이어가 손에 들고 있는 아이템을 저장하기 위한 데이터
+/// 아이템 오브젝트 자체를 저장하지 않고 ItemID만 저장
+/// 로드 시 ItemDatabase를 통해 다시 ItemData를 찾아 복원
+/// </summary>
+[Serializable]
+public class HeldItemSaveData
+{
+    public bool hasItem;
+    public string itemId;
+
+    public HeldItemSaveData()
+    {
+        hasItem = false;
+        itemId = string.Empty;
+    }
+
+    public HeldItemSaveData(bool hasItem, string itemId)
+    {
+        this.hasItem = hasItem;
+        this.itemId = itemId;
     }
 }
