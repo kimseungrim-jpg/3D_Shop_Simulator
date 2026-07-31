@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour
         ApplyLoadedShelves(savedata.shelfSlots);
         ApplyLoadedStockItems(savedata.stockItems);
         ApplyLoadedHeldItem(savedata.helfItem);
+        ApplyLoadedReturnZoneItems(savedata.returnZoneItems);
 
         Debug.Log($"[GameManager] 저장 데이터 적용 완료 / Day: {day}, Money: {money}"); 
     }
@@ -192,6 +193,22 @@ public class GameManager : MonoBehaviour
         }
 
         playerInventory.ApplyLoadedHeldItem(heldItemSaveData);
+    }
+
+    /// <summary>
+    /// 저장 데이터에 포함된 반납함 아이템 목록을 현재 씬의 ReturnZone에 복원
+    /// </summary>
+    public void ApplyLoadedReturnZoneItems(List<ReturnZoneItemSaveData> returnZoneItemSaveList)
+    {
+        ReturnZone returnZone = FindAnyObjectByType<ReturnZone>();
+
+        if (returnZone == null)
+        {
+            Debug.LogWarning("[GameManager] ReturnZone이 없어 반납함 아이템을 복원하지 못했습니다.");
+            return;
+        }
+
+        returnZone.ApplyLoadedReturnZoneData(returnZoneItemSaveList);
     }
 
     /// <summary>
@@ -246,6 +263,17 @@ public class GameManager : MonoBehaviour
         if (playerInventory != null)
         {
             saveData.helfItem = playerInventory.CreateHeldItemSaveData();
+        }
+
+        ReturnZone returnZone = FindAnyObjectByType<ReturnZone>();
+
+        if (returnZone != null)
+        {
+            saveData.returnZoneItems.AddRange(returnZone.CreateReturnZoneSaveData());
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] ReturnZone이 없어 반납함 아이템을 저장하지 못했습니다.");
         }
 
         return saveData;

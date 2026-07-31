@@ -25,7 +25,10 @@ public class ReturnZone : MonoBehaviour, IInteractable
     /// </summary>
     public ItemData TakeItem()
     {
-        if(storedItems.Count == 0) return null;
+        if (storedItems.Count == 0)
+        {
+            return null;
+        }
 
         ItemData item = storedItems[0];
         storedItems.RemoveAt(0);
@@ -34,10 +37,33 @@ public class ReturnZone : MonoBehaviour, IInteractable
 
     /// <summary>
     /// 플레이어 상호작용 UI 안내 문구 갱신할 때 호출
+    /// 반납함에 아이템이 있으면 가장 먼저 꺼낼 아이템과 남은 총 수량을 함꼐 표시
     /// </summary>
     public string GetInteractText()
     {
-        return storedItems.Count > 0 ? "E - 아이템 가져가기" : "";
+        if (storedItems.Count == 0)
+        {
+            return "반납함이 비어있습니다.";
+        }
+
+        ItemData firstItem = storedItems[0];
+
+        if (storedItems.Count == 1)
+        {
+            if (firstItem == null)
+            {
+                return "E - 아이템 가져가기\n알 수 없는 아이템";
+            }
+
+            return $"E - 아이템 가져가기\n{firstItem.itemName}";
+        }
+
+        if (firstItem == null)
+        {
+            return $"E - 아이템 가져가기\n알 수 없는 아이템 / 남은 수량 {storedItems.Count}";
+        }
+
+        return $"E - 아이템 가져가기\n{firstItem.itemName} / 남은 수량 {storedItems.Count}";
     }
 
     /// <summary>
@@ -75,5 +101,71 @@ public class ReturnZone : MonoBehaviour, IInteractable
         }
 
         storedItems.RemoveAt(0);
+    }
+
+    /// <summary>
+    /// 현재 반납함에 보관된 아이템 목록을 저장 데이터로 변환
+    /// storedItems의 순서를 그대로 저장하기 위해 아이템 하나당 저장 데이터 하나를 생성
+    /// </summary>
+    public List<ReturnZoneItemSaveData> CreateReturnZoneSaveData()
+    {
+        List<ReturnZoneItemSaveData> saveDataList = new List<ReturnZoneItemSaveData>();
+
+        foreach (ItemData itemData in storedItems)
+        {
+            if (itemData == null)
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(itemData.itemID))
+            {
+                Debug.LogWarning($"[ReturnZone] ItemID가 없어 반납할 아이템을 저장할 수 없습니다.");
+                continue;
+            }
+
+            saveDataList.Add(new ReturnZoneItemSaveData(itemData.itemID));
+        }
+
+        Debug.Log($"[ReturnZone] 반납함 저장 개수: {saveDataList.Count}");
+
+        return saveDataList;
+    }
+
+    /// <summary>
+    /// 저장 데이터에 있던 반납함 아이템 목록을 현재 반납함에 복원
+    /// 저장된 순서대로 storedItems에 다시 추가하여 기존 회수 순서를 유지
+    /// </summary>
+    public void ApplyLoadedReturnZoneData(List<ReturnZoneItemSaveData> saveDataList)
+    {
+        storedItems.Clear();
+
+        if (saveDataList == null)
+        {
+            return;
+        }
+
+        if (ItemDatabase.Instance == null)
+        {
+            Debug.LogWarning("[ReturnZone] ItemDatabase가 없어 반납함 아이템을 복원할 수 없습니다.");
+            return;
+        }
+
+        foreach (ReturnZoneItemSaveData saveData in saveDataList)
+        {
+            if (saveData == null)
+            {
+                continue;
+            }
+
+            if (!ItemDatabase.Instance.TryGetItemData(saveData.ItemId, out ItemData itemData))
+            {
+                continue;
+            }
+
+            storedItems.Add(itemData);
+        }
+
+        Debug.Log($"[ReturnZone] 반납할 복원 완료 / Count: {storedItems.Count}");
     }
 }

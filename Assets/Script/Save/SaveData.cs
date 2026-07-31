@@ -116,11 +116,9 @@ public class HeldItemSaveData
 public class ReturnZoneItemSaveData
 {
     public string ItemId;
-    public int amount;
 
-    public ReturnZoneItemSaveData(string itemId, int amount)
+    public ReturnZoneItemSaveData(string itemId)
     {
         this.ItemId = itemId;
-        this.amount = amount;
     }
 }
