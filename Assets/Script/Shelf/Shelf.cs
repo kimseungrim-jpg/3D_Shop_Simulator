@@ -85,8 +85,7 @@ public class Shelf : MonoBehaviour, IInteractable
             {
                 if (slot.PlaceItem(player.currentItem))
                 {
-                    player.currentItem = null;
-                    player.currentItemData = null;
+                    player.ClearHeldItenReferenceOnly();
                     return;
                 }
             }

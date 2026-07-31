@@ -52,12 +52,30 @@ public class PlayerInteract : MonoBehaviour
     {
         if (target is ReturnZone returnZone)
         {
-            ItemData data = returnZone.TakeItem();
-
-            if (data != null && inventory.currentItem == null)
+            if (inventory == null)
             {
-                inventory.SetItem(data);
+                Debug.LogWarning("[PlayerInteract] PlayerInventory가 없어 반납상자 아이템을 가져올 수 없습니다.");
+                return;
             }
+
+            if (inventory.HasHeldItem())
+            {
+                Debug.Log("[[PlayerInteract] 이미 아이템을 들고 있어 반납상자에서 아이템을 가져올 수 없습니다.");
+            }
+
+            ItemData data = returnZone.PeekItem();
+
+            if (data == null)
+            {
+                return;
+            }
+
+            if (!inventory.TrySetItem(data))
+            {
+                return;
+            }
+
+            returnZone.RemoveFirstItem();
 
             return;
         }

@@ -48,4 +48,32 @@ public class ReturnZone : MonoBehaviour, IInteractable
     {
         // Player에서 처리 (비워둬도 OK)
     }
+
+    /// <summary>
+    /// 반납상자에 보관된 첫 번째 아이템을 제거하지 않고 확인만 함
+    /// 플레이어가 실제로 아이템을 들 수 있는지 검사하기 전에 사용
+    /// </summary>
+    public ItemData PeekItem()
+    {
+        if (storedItems.Count == 0)
+        {
+            return null;
+        }
+        
+        return storedItems[0];
+    }
+
+    /// <summary>
+    /// 반납상자에 보관된 첫 번째 아이템을 실제로 제거
+    /// 플레이어가 아이템을 손에 드는 데 성공한 뒤 호출
+    /// </summary>
+    public void RemoveFirstItem()
+    {
+        if (storedItems.Count == 0)
+        {
+            return;
+        }
+
+        storedItems.RemoveAt(0);
+    }
 }

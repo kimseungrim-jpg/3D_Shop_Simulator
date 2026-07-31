@@ -174,6 +174,32 @@ public class PlayerInventory : MonoBehaviour
     }
 
     /// <summary>
+    /// 현재 플레이어가 손에 아이템을 들고 있는지 확인
+    /// 반납상자, 구매, 줍기 같은 외부 시스템이 플레이어의 손 상태를 직접 검사하지 않도록 사용
+    /// </summary>
+    public bool HasHeldItem()
+    {
+        return currentItem != null || currentItemData != null || holdItem != null;
+    }
+
+    /// <summary>
+    /// 플레이어 손이 비어 있을 때만 ItemData를 기준으로 아이템을 들도록 시도
+    /// 성공 여부를 반환하여 반납상자 같은 외부 시스템이 후속 처리를 결정할 수 있도록 함
+    /// </summary>
+    public bool TrySetItem(ItemData data)
+    {
+        if (HasHeldItem())
+        {
+            Debug.Log("[PlayerInventory] 이미 아이템을 들고 있어 새 아이템을 들 수 없습니다.");
+            return false;
+        }
+
+        SetItem(data);
+
+        return HasHeldItem();
+    }
+
+    /// <summary>
     /// 픽업 아이템을 저장 데이터로 반환
     /// </summary>
     public HeldItemSaveData CreateHeldItemSaveData()
@@ -224,11 +250,22 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     private Transform GetHoldParent()
     {
-        if (holdItem != null)
+        if (holdPoint != null)
         {
             return holdPoint;
         }
 
         return hand;
+    }
+
+    /// <summary>
+    /// 손에 들고 있던 아이템 오브젝트를 제거하지 않고 참조만 비움
+    /// 진열대처럼 아이템 오브젝트의 소유권이 다른 오브젝트로 넘어갔을 때 호출
+    /// </summary>
+    public void ClearHeldItenReferenceOnly()
+    {
+        currentItem = null;
+        currentItemData = null;
+        holdItem = null;
     }
 }

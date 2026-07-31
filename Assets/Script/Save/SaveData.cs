@@ -27,6 +27,7 @@ public class SaveData
 
     public List<StockItemSaveData> stockItems = new List<StockItemSaveData>();
     public List<ShelfSlotSaveData> shelfSlots = new List<ShelfSlotSaveData>();
+    public List<ReturnZoneItemSaveData> returnZoneItems = new List<ReturnZoneItemSaveData>();
 }
 
 /// <summary>
@@ -103,5 +104,23 @@ public class HeldItemSaveData
     {
         this.hasItem = hasItem;
         this.itemId = itemId;
+    }
+}
+
+/// <summary>
+/// 반납함에 보관 중인 아이템을 저장하기 위한 데이터
+/// ItemData 자체를 저장하지 않고 ItemId만 저장
+/// 로드 시 ItemDatabase를 통해 다시 ItemData를 찾아 복원
+/// </summary>
+[Serializable]
+public class ReturnZoneItemSaveData
+{
+    public string ItemId;
+    public int amount;
+
+    public ReturnZoneItemSaveData(string itemId, int amount)
+    {
+        this.ItemId = itemId;
+        this.amount = amount;
     }
 }
