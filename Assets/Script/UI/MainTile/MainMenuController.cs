@@ -80,6 +80,8 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnClickNewGame()
     {
+        AudioManager.instance?.PlayPopup();
+
         if (SaveManager.instance != null)
         {
             //새 게임은 이전 진행 데이터를 사용하지 않아야 하므로 저장 파일과 대기 데이터를 초기화
@@ -97,6 +99,8 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnClickContinue()
     {
+        AudioManager.instance?.PlayPopup();
+
         if (SaveManager.instance == null)
         {
             Debug.LogWarning("[MainMenuController] SaveManager가 없습니다.");
@@ -124,6 +128,8 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnClickQuitGame()
     {
+        AudioManager.instance?.PlayButtonClick();
+
         Debug.Log("[MainMenuController] 게임 종료 요청");
         Application.Quit();
     }

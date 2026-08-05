@@ -14,9 +14,13 @@ public class ShopItemButton : MonoBehaviour
     {
         if (GameManager.instance.money < itemData.buyPrice)
         {
+            AudioManager.instance?.PlayError();
+
             Debug.Log("돈 부족!");
             return;
         }
+
+        AudioManager.instance?.PlayBuy();
 
         GameManager.instance.AddMoney(-itemData.buyPrice);
         GameManager.instance.purchaseCost += itemData.buyPrice;

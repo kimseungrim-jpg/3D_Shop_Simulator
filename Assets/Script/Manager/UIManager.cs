@@ -101,6 +101,8 @@ public class UIManager : MonoBehaviour
     /// <param name="shopUI"></param>
     public void CloseShop(GameObject shopUI)
     {
+        AudioManager.instance?.PlayButtonClick();
+
         shopUI.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -116,6 +118,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowResultUI(int sales, int purchse, int maintenance)
     {
+        AudioManager.instance?.PlayButtonClick();
+
         resultPanel.SetActive(true);
 
         //결과 UI를 조작할 수 있도록 커서를 해제하고 정산 중에는 월드 조작을 차단
@@ -164,7 +168,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 영어 결과창을 닫고 플레이어 조작을 복원
+    /// 영업 결과창을 닫고 플레이어 조작을 복원
     /// 정산 공개 후 플레이어가 클릭하거나 자동 종료 시간이 만료되었을 때 호출
     /// </summary>
     void CloseResultUI()

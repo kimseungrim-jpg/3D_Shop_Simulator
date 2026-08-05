@@ -17,6 +17,7 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] private Button titleButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button returnGameButton;
 
     [Header("옵션 메뉴 버튼")]
     [SerializeField] private Button optionBackButton;
@@ -56,6 +57,11 @@ public class PauseMenuController : MonoBehaviour
         {
             optionBackButton.onClick.AddListener(CloseOptionMenu);
         }
+
+        if (returnGameButton != null)
+        {
+            returnGameButton.onClick.AddListener(ResumeGame);
+        }
     }
 
     private void OnDisable()
@@ -78,6 +84,11 @@ public class PauseMenuController : MonoBehaviour
         if (optionBackButton != null)
         {
             optionBackButton.onClick.RemoveListener(CloseOptionMenu);
+        }
+
+        if (returnGameButton != null)
+        {
+            returnGameButton.onClick.RemoveListener(ResumeGame);
         }
     }
 
@@ -111,6 +122,8 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     public void OpenPauseMenu()
     {
+        AudioManager.instance?.PlayPopup();
+
         isPaused = true;
 
         if (pausePanel != null)
@@ -126,8 +139,8 @@ public class PauseMenuController : MonoBehaviour
         SetPlayerControl(false);
 
         Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+
+        SetMenuCursor();
     }
 
     /// <summary>
@@ -136,6 +149,8 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     public void ResumeGame()
     {
+        AudioManager.instance?.PlayButtonClick();
+
         isPaused = false;
 
         CloseAllPanels();
@@ -143,6 +158,8 @@ public class PauseMenuController : MonoBehaviour
         SetPlayerControl(true);
 
         Time.timeScale = 1f;
+
+        SetGameplayCursor();
     }
 
     /// <summary>
@@ -151,6 +168,8 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     public void OpenOptionMenu()
     {
+        AudioManager.instance?.PlayPopup();
+
         Debug.Log("[PauseMenuController] 옵션 버튼 클릭됨");
 
 
@@ -171,6 +190,8 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     private void CloseOptionMenu()
     {
+        AudioManager.instance?.PlayButtonClick();
+
         if (optionPanel != null)
         {
             optionPanel.SetActive(false);
@@ -188,9 +209,13 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     private void ReturnToTitle()
     {
+        AudioManager.instance?.PlayButtonClick();
+
         Time.timeScale = 1f;
 
         SetPlayerControl(true);
+
+        SetMenuCursor();
 
         SceneManager.LoadScene(titleSceneName);
     }
@@ -201,6 +226,8 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     private void QuitGame()
     {
+        AudioManager.instance?.PlayButtonClick();
+
         Time.timeScale = 1f;
 
 #if UNITY_EDITOR
@@ -242,5 +269,26 @@ public class PauseMenuController : MonoBehaviour
         {
             playerInteract.enabled = canControl;
         }
+    }
+
+    /// <summary>
+    /// 게임 플레이 상태의 커서 설정으로 전환
+    /// 일시정지 메뉴를 닫고 다시 게임으로 돌아갈 때 호출
+    /// </summary>
+    private void SetGameplayCursor()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+    }
+
+    /// <summary>
+    /// UI 메뉴 조작 상태의 커서 설정으로 전환
+    /// 일시정지 메뉴나 옵션 메뉴를 열 때 호출
+    /// </summary>
+    private void SetMenuCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

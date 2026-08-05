@@ -13,6 +13,8 @@ public class POSMachine : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
+        AudioManager.instance?.PlayButtonClick();
+
         shopUI.SetActive(true);
 
         //상점 조작을 위해서 마우스 커서를 해제
