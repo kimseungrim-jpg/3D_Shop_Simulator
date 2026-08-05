@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
 
         ApplyLoadedShelves(savedata.shelfSlots);
         ApplyLoadedStockItems(savedata.stockItems);
-        ApplyLoadedHeldItem(savedata.helfItem);
+        ApplyLoadedHeldItem(savedata.heldItem);
         ApplyLoadedReturnZoneItems(savedata.returnZoneItems);
 
         Debug.Log($"[GameManager] 저장 데이터 적용 완료 / Day: {day}, Money: {money}"); 
@@ -262,7 +262,7 @@ public class GameManager : MonoBehaviour
 
         if (playerInventory != null)
         {
-            saveData.helfItem = playerInventory.CreateHeldItemSaveData();
+            saveData.heldItem = playerInventory.CreateHeldItemSaveData();
         }
 
         ReturnZone returnZone = FindAnyObjectByType<ReturnZone>();

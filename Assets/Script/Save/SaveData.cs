@@ -23,7 +23,7 @@ public class SaveData
 
     public string saveAt;
 
-    public HeldItemSaveData helfItem = new HeldItemSaveData();
+    public HeldItemSaveData heldItem = new HeldItemSaveData();
 
     public List<StockItemSaveData> stockItems = new List<StockItemSaveData>();
     public List<ShelfSlotSaveData> shelfSlots = new List<ShelfSlotSaveData>();

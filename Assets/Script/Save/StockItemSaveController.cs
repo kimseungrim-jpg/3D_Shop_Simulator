@@ -38,7 +38,7 @@ public class StockItemSaveController : MonoBehaviour
 
         foreach (Item item in items)
         {
-            if (item == null && item.data == null)
+            if (item == null || item.data == null)
             {
                 continue;
             }
