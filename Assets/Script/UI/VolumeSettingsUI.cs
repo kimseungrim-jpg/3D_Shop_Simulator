@@ -14,39 +14,39 @@ public class VolumeSettingsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (AudioManager.instance == null)
+        if (AudioManager.Instance == null)
         {
             return;
         }
 
         if (bgmSlider != null)
         {
-            bgmSlider.SetValueWithoutNotify(AudioManager.instance.BgmVolume);
-            bgmSlider.onValueChanged.AddListener(AudioManager.instance.SetBgmVolume);
+            bgmSlider.SetValueWithoutNotify(AudioManager.Instance.BgmVolume);
+            bgmSlider.onValueChanged.AddListener(AudioManager.Instance.SetBgmVolume);
         }
 
         if (sfxSlider != null)
         {
-            sfxSlider.SetValueWithoutNotify(AudioManager.instance.SfxVolume);
-            sfxSlider.onValueChanged.AddListener(AudioManager.instance.SetSfxVolume);
+            sfxSlider.SetValueWithoutNotify(AudioManager.Instance.SfxVolume);
+            sfxSlider.onValueChanged.AddListener(AudioManager.Instance.SetSfxVolume);
         }
     }
 
     private void OnDisable()
     {
-        if (AudioManager.instance == null)
+        if (AudioManager.Instance == null)
         {
             return;
         }
 
         if (bgmSlider != null)
         {
-            bgmSlider.onValueChanged.RemoveListener(AudioManager.instance.SetBgmVolume);
+            bgmSlider.onValueChanged.RemoveListener(AudioManager.Instance.SetBgmVolume);
         }
 
         if (sfxSlider != null)
         {
-            sfxSlider.onValueChanged.RemoveListener(AudioManager.instance.SetSfxVolume);
+            sfxSlider.onValueChanged.RemoveListener(AudioManager.Instance.SetSfxVolume);
         }
     }
 }

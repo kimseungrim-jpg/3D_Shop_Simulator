@@ -101,7 +101,7 @@ public class UIManager : MonoBehaviour
     /// <param name="shopUI"></param>
     public void CloseShop(GameObject shopUI)
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         shopUI.SetActive(false);
 
@@ -118,7 +118,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowResultUI(int sales, int purchse, int maintenance)
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         resultPanel.SetActive(true);
 

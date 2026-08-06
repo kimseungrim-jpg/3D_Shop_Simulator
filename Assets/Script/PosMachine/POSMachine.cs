@@ -13,7 +13,7 @@ public class POSMachine : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         shopUI.SetActive(true);
 

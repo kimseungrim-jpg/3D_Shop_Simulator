@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
@@ -7,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance { get; private set; }
+    public static AudioManager Instance { get; private set; }
 
     private const string BgmVolumeKey = "BGM_VOLUME";
     private const string SfxVolumeKey = "SFX_VOLUME";
@@ -17,7 +18,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource sfxSource;
 
     [Header("BGM")]
-    [SerializeField] private AudioClip defaultBgm;
+    [SerializeField] private AudioClip mainBgm;
+    [SerializeField] private AudioClip shopBgm;
+
+    [Header("Scene Names")]
+    [SerializeField] private string mainMenuSceneName = "MainScene";
+    [SerializeField] private string shipSceneName = "ShopScene";
 
     [Header("SFX")]
     [SerializeField] private AudioClip buttonClickClip;
@@ -30,39 +36,80 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
 
         LoadVolumeSetting();
         ApplyVolume();
+    }
 
-        PlayDefaultBgm();
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+    private void Start()
+    {
+        PlayBgmByScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    /// 씬 로드가 완료됐을 때 호출
+    /// 현재 씬 이름을 기준으로 재생할 BGM을 결정
+    /// </summary>
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        PlayBgmByScene(scene.name);
+    }
+
+    /// <summary>
+    /// 씬 이름에 맞는 BGM을 선택해 재생
+    /// </summary>
+    private void PlayBgmByScene(string sceneName)
+    {
+        if (sceneName == mainMenuSceneName)
+        {
+            PlayBgm(mainBgm);
+            return;
+        }
+
+        if (sceneName == shipSceneName)
+        {
+            PlayBgm(shopBgm);
+            return;
+        }
     }
 
     /// <summary>
     /// 기본 BGM을 반복 재생
     /// AudioManager가 처음 생성될 때 호출
     /// </summary>
-    public void PlayDefaultBgm()
+    public void PlayBgm(AudioClip clip)
     {
-        if (bgmSource == null || defaultBgm == null)
+        if (bgmSource == null || clip == null)
         {
             return;
         }
 
-        if (bgmSource.clip == defaultBgm && bgmSource.isPlaying)
+        if (bgmSource.clip == clip && bgmSource.isPlaying)
         {
             return;
         }
 
-        bgmSource.clip = defaultBgm;
+        bgmSource.clip = clip;
         bgmSource.loop = true;
+        bgmSource.volume = BgmVolume;
         bgmSource.Play();
     }
 

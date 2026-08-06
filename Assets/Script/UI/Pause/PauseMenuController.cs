@@ -122,7 +122,7 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     public void OpenPauseMenu()
     {
-        AudioManager.instance?.PlayPopup();
+        AudioManager.Instance?.PlayPopup();
 
         isPaused = true;
 
@@ -149,7 +149,7 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     public void ResumeGame()
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         isPaused = false;
 
@@ -168,7 +168,7 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     public void OpenOptionMenu()
     {
-        AudioManager.instance?.PlayPopup();
+        AudioManager.Instance?.PlayPopup();
 
         Debug.Log("[PauseMenuController] 옵션 버튼 클릭됨");
 
@@ -190,7 +190,7 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     private void CloseOptionMenu()
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         if (optionPanel != null)
         {
@@ -209,7 +209,7 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     private void ReturnToTitle()
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         Time.timeScale = 1f;
 
@@ -226,7 +226,7 @@ public class PauseMenuController : MonoBehaviour
     /// </summary>
     private void QuitGame()
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         Time.timeScale = 1f;
 

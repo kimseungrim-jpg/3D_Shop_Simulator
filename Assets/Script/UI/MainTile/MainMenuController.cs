@@ -80,7 +80,7 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnClickNewGame()
     {
-        AudioManager.instance?.PlayPopup();
+        AudioManager.Instance?.PlayPopup();
 
         if (SaveManager.instance != null)
         {
@@ -99,7 +99,7 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnClickContinue()
     {
-        AudioManager.instance?.PlayPopup();
+        AudioManager.Instance?.PlayPopup();
 
         if (SaveManager.instance == null)
         {
@@ -128,7 +128,7 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnClickQuitGame()
     {
-        AudioManager.instance?.PlayButtonClick();
+        AudioManager.Instance?.PlayButtonClick();
 
         Debug.Log("[MainMenuController] 게임 종료 요청");
         Application.Quit();
