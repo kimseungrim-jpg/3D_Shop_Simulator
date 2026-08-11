@@ -1637,8 +1637,8 @@ MonoBehaviour:
   day: 1
   startMoney: 10000
   startDay: 1
-  prepareTime: 30
-  openTime: 60
+  prepareTime: 20
+  openTime: 40
   dailySales: 0
   purchaseCost: 0
   maintenanceCost: 0
