@@ -24,19 +24,26 @@
 
 ## 플레이 영상
 
-> 플레이 영상 또는 GIF 추가 예정
+[3D Shop Simulator 플레이 영상](https://drive.google.com/file/d/1sIhqFuyXmt7fvqCovgn-ReAEerhmsuVb/view?usp=sharing)
 
 ## 플레이 화면
 
 ### 메인 메뉴
+![메인 메뉴](./Docs/Images/main_menu.png)
 
 ### 상점 플레이
+![상점 플레이](./Docs/Images/gameplay.png)
 
 ### 상품 구매 및 픽업
+![상품 구매](./Docs/Images/buy_item.png)
+![상품 픽업](./Docs/Images/pickup_item.png)
+![상품 픽업](./Docs/Images/pickup_item2.png)
 
 ### 고객 계산
+![고객 계산](./Docs/Images/checkout.png)
 
 ### 하루 정산
+![하루 정산](./Docs/Images/result_panel.png)
 
 ## 주요 기능
 
