@@ -61,6 +61,7 @@ public class PlayerInteract : MonoBehaviour
             if (inventory.HasHeldItem())
             {
                 Debug.Log("[[PlayerInteract] 이미 아이템을 들고 있어 반납상자에서 아이템을 가져올 수 없습니다.");
+                return;
             }
 
             ItemData data = returnZone.PeekItem();

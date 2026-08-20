@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("Scene Names")]
     [SerializeField] private string mainMenuSceneName = "MainScene";
-    [SerializeField] private string shipSceneName = "ShopScene";
+    [SerializeField] private string shopSceneName = "ShopScene";
 
     [Header("SFX")]
     [SerializeField] private AudioClip buttonClickClip;
@@ -84,7 +84,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        if (sceneName == shipSceneName)
+        if (sceneName == shopSceneName)
         {
             PlayBgm(shopBgm);
             return;
@@ -124,7 +124,7 @@ public class AudioManager : MonoBehaviour
 
     /// <summary>
     /// 팝업 또는 메뉴가 열릴 때 효과음을 재생
-    /// 일시정지 메뉴, 결과창, 옴션창 표시 시 호출
+    /// 일시정지 메뉴, 결과창, 옵션창 표시 시 호출
     /// </summary>
     public void PlayPopup()
     {

@@ -25,7 +25,7 @@ public class ShopItemButton : MonoBehaviour
         GameManager.instance.AddMoney(-itemData.buyPrice);
         GameManager.instance.purchaseCost += itemData.buyPrice;
 
-        //연속 구매한 상품들이 전확히 같은 위치에 겹치지 않도록 수평 위치를 조금씩 분산
+        //연속 구매한 상품들이 정확히 같은 위치에 겹치지 않도록 수평 위치를 조금씩 분산
         Vector3 offset = Random.insideUnitSphere * 0.5f;
         offset.y = 0;
 

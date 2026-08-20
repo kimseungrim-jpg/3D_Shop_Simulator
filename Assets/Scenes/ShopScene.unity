@@ -10464,7 +10464,6 @@ GameObject:
   - component: {fileID: 6254622102859036014}
   - component: {fileID: 3321382252887293228}
   - component: {fileID: 8153792293580095909}
-  - component: {fileID: 8153792293580095910}
   - component: {fileID: 8153792293580095911}
   m_Layer: 0
   m_Name: Counter
@@ -11554,19 +11553,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.70000017, y: 1.2802508, z: 0.776894}
   m_Center: {x: -0.35000008, y: 0.6401254, z: 0.31155315}
---- !u!114 &8153792293580095910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5605888459175072955}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6edbb04049fa9354cbb22398b28cfa4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemPrice: 100
 --- !u!114 &8153792293580095911
 MonoBehaviour:
   m_ObjectHideFlags: 0

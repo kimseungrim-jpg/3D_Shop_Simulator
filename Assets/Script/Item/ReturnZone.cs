@@ -37,7 +37,7 @@ public class ReturnZone : MonoBehaviour, IInteractable
 
     /// <summary>
     /// 플레이어 상호작용 UI 안내 문구 갱신할 때 호출
-    /// 반납함에 아이템이 있으면 가장 먼저 꺼낼 아이템과 남은 총 수량을 함꼐 표시
+    /// 반납함에 아이템이 있으면 가장 먼저 꺼낼 아이템과 남은 총 수량을 함께 표시
     /// </summary>
     public string GetInteractText()
     {
@@ -166,6 +166,6 @@ public class ReturnZone : MonoBehaviour, IInteractable
             storedItems.Add(itemData);
         }
 
-        Debug.Log($"[ReturnZone] 반납할 복원 완료 / Count: {storedItems.Count}");
+        Debug.Log($"[ReturnZone] 반납함 복원 완료 / Count: {storedItems.Count}");
     }
 }

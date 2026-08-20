@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     [Header("하루 정산 데이터")]
     public int dailySales = 0; //하루판매량
-    public int purchaseCost = 0; //구이비
+    public int purchaseCost = 0; //구입비
     public int maintenanceCost = 0; //매장 관리비
 
     [Header("누적 데이터")]
@@ -331,7 +331,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 결과창이 닫혔을 때 호출
-    /// 다음 날로 전한환 뒤 현재 진행 상태를 저장
+    /// 다음 날로 전환 뒤 현재 진행 상태를 저장
     /// </summary>
     public void OnResultClosed()
     {

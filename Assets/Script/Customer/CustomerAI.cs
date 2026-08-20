@@ -460,7 +460,7 @@ public class CustomerAI : MonoBehaviour
     }
 
     /// <summary>
-    /// 결재 완료 상태를 기록하고 손님을 출구로 이동시킴
+    /// 결제 완료 상태를 기록하고 손님을 출구로 이동시킴
     /// CheckoutCounter가 해당 손님의 결제 금액을 정산한 직후 호출
     /// </summary>
     public void FinishCheckout()

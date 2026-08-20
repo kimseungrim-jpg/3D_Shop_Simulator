@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 플레이어가 상호작용할 수 있는 오브젝트가 구현해야 하는 곹옽 기능을 정의
+/// 플레이어가 상호작용할 수 있는 오브젝트가 구현해야 하는 공통 기능을 정의
 /// </summary>
 public interface IInteractable
 {

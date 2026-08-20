@@ -35,7 +35,7 @@ public class CheckoutCounter : MonoBehaviour, IInteractable
 
     /// <summary>
     /// 현재 대기 순서에 맞춰 각 손님의 목적지를 배치
-    /// 결제 대상이 되는 맨 앞 손님을 갱신
+    /// 결재 대상이 되는 맨 앞 손님을 갱신
     /// 대기열에 손님이 추가되거나 제거된 직후 호출
     /// </summary>
     void UpdateQueuePositions()

@@ -37,7 +37,7 @@ public class FadeMessageUI : MonoBehaviour
 
     /// <summary>
     /// 메시지의 페이드 인, 완전 표시 콜백, 표시 유지, 페이드 아웃을 순서대로 처리
-    /// ShowMessage가 새롱누 메시지 표시를 요청할 때 코루틴으로 실행
+    /// ShowMessage가 새로운 메시지 표시를 요청할 때 코루틴으로 실행
     /// </summary>
     IEnumerator Sequence(string message, System.Action onFullyVisible)
     {
